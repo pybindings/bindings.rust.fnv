@@ -1,0 +1,3 @@
+include COPYING
+include Cargo.toml
+recursive-include . *.rs
