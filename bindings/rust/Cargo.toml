@@ -1,0 +1,15 @@
+[package]
+name = "bindings.rust.fnv"
+version = "0.1.0"
+authors = ["Martin Larralde <martin.larralde@ens-cachan.fr>"]
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+name = "bindings_rust_fnv"
+path = "fnv.rs"
+
+[dependencies]
+pyo3 = { version = "*", features = ["extension-module"] }
+fnv = "1.0.6"
+byteorder = "1"
