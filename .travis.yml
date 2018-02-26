@@ -2,15 +2,24 @@ sudo: false
 language: python
 cache: pip
 
+env:
+  global:
+    - CARGO_HOME="$HOME/.cargo"
+    - PATH="$PATH:$CARGO_HOME/bin"
+
+cache:
+  directories:
+  - $CARGO_HOME
+  - $HOME/.pip/cache
+
 python:
 - '2.7'
-- '3.3'
-- '3.4'
 - '3.5'
 - '3.6'
+- nightly
 
 before_install:
-- curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain nightly
+- curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
 - pip install -U setuptools setuptools_rust
 
 install:
