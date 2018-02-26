@@ -82,7 +82,7 @@ impl FnvHasher {
 
 #[py::modinit(fnv)]
 fn init_mod(py: Python, m: &PyModule) -> PyResult<()> {
-    m.add_class::<_FnvHasher>()?;
+    m.add_class::<FnvHasher>()?;
 
     #[pyfn(m, "fnv")]
     fn fnv_py(py: Python, key: Option<u64>) -> PyResult<Py<FnvHasher>> {

@@ -1,0 +1,25 @@
+sudo: false
+language: python
+cache: pip
+
+python:
+- '2.7'
+- '3.3'
+- '3.4'
+- '3.5'
+- '3.6'
+
+before_install:
+- curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain nightly
+- pip install -U setuptools setuptools_rust
+
+install:
+- python setup.py build
+- pip install .
+
+script:
+- python setup.py test
+
+notifications:
+  email:
+  - althonosdev@gmail.com
