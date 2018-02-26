@@ -4,6 +4,10 @@ import setuptools
 import setuptools_rust as rust
 
 setuptools.setup(
+    setup_requires=[
+        "setuptools",
+        "setuptools_rust",
+    ],
     rust_extensions=[
         rust.RustExtension(
             "bindings.rust.fnv",

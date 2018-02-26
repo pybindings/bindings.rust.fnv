@@ -43,7 +43,8 @@ and `wheel <https://pypi.python.org/pypi/wheel>`_ Python modules with
 Finally, compile the library into a wheel for your platform,
 and install it::
 
-  python setup.py bdist
+  python setup.py bdist_wheel
+  pip install --user dist/*.whl
 
 
 
