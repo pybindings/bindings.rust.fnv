@@ -29,6 +29,10 @@ install:
 script:
 - python setup.py test
 
+before_deploy:
+- pip install restructuredtext_lint
+- rst-lint README.rst
+
 notifications:
   email:
   - althonosdev@gmail.com
