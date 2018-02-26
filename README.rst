@@ -50,7 +50,8 @@ and install it::
 Usage
 -----
 
-Import the module from the `bindings.rust` namespace:
+Import the module from the `bindings.rust <https://pypi.python.org/pypi/bindings.rust>`_
+namespace:
 
 .. code-block:: python
 

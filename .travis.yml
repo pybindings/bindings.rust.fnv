@@ -30,8 +30,8 @@ script:
 - python setup.py test
 
 before_deploy:
-- pip install restructuredtext_lint
-- rst-lint README.rst
+- python setup.py check -rms sdist
+- python setup.py bdist_wheel
 
 notifications:
   email:
