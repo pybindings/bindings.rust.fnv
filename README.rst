@@ -44,3 +44,34 @@ Finally, compile the library into a wheel for your platform,
 and install it::
 
   python setup.py bdist
+
+
+
+Usage
+-----
+
+Import the module from the `bindings.rust` namespace:
+
+.. code-block:: python
+
+   >>> from bindings.rust import fnv
+
+Create a ``FnvHasher`` object, with an optional integer key to initialize
+the hasher state with.
+
+.. code-block:: python
+
+   >>> default_hasher = fnv.FnvHasher()
+   >>> hasher_with_key = fnv.FnvHasher(key=255)
+
+Then, use it as any `hash object <https://docs.python.org/3/library/hashlib.html#hash-algorithms>`_
+from the ``hashlib`` module:
+
+.. code-block:: python
+
+  >>> default_hasher.update(b'hash this text')
+  >>> default_hasher.update(bytearray(b'hash this as well'))
+  >>> bytearray(default_hasher.digest())
+  bytearray(b'\x02\xe5\xd2\x84\xae\x0f\xb9\xd3')
+  >>> default_hasher.hexdigest()
+  'd3b90fae84d2e502'
