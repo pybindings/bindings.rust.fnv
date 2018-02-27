@@ -1,19 +1,32 @@
 ``bindings.rust.fnv``
 =====================
 
-|Source| |Travis| |Codecov| |Crate|
+|Source| |PyPI| |Crate| |Travis| |Codecov| |Versions| |Format| |License|
 
-.. |Source| image:: https://img.shields.io/badge/source-GitHub-303030.svg?style=flat-square
+.. |Source| image:: https://img.shields.io/badge/source-GitHub-303030.svg?style=flat-square&maxAge=300
    :target: https://github.com/pybindings/bindings.rust.fnv
 
-.. |Travis| image:: https://img.shields.io/travis/pybindings/bindings.rust.fnv/master.svg?style=flat-square
+.. |Travis| image:: https://img.shields.io/travis/pybindings/bindings.rust.fnv/master.svg?style=flat-square&maxAge=300
    :target: https://travis-ci.org/pybindings/bindings.rust.fnv
 
-.. |Codecov| image:: https://img.shields.io/codecov/c/github/pybindings/bindings.rust.fnv/master.svg?style=flat-square
+.. |Codecov| image:: https://img.shields.io/codecov/c/github/pybindings/bindings.rust.fnv/master.svg?style=flat-square&maxAge=300
    :target: https://codecov.io/gh/pybindings/bindings.rust.fnv
 
-.. |Crate| image:: https://img.shields.io/crates/v/fnv.svg?style=flat-square
+.. |PyPI| image:: https://img.shields.io/pypi/v/bindings.rust.fnv.svg?style=flat-square&maxAge=300
+   :target: https://pypi.python.org/pypi/bindings.rust.fnv
+
+.. |Crate| image:: https://img.shields.io/crates/v/fnv.svg?style=flat-square&maxAge=300
    :target: https://crates.io/crates/fnv
+
+.. |Format| image:: https://img.shields.io/pypi/format/bindings.rust.fnv.svg?style=flat-square&maxAge=300
+   :target: https://pypi.python.org/pypi/bindings.rust.fnv
+
+.. |Versions| image:: https://img.shields.io/pypi/pyversions/bindings.rust.fnv.svg?style=flat-square&maxAge=300
+   :target: https://travis-ci.org/pybindings/bindings.rust.fnv
+
+.. |License| image:: https://img.shields.io/pypi/l/bindings.rust.fnv.svg?style=flat-square&maxAge=300
+   :target: https://choosealicense.com/licenses/mit
+
 
 Python bindings to the `fnv <https://crates.io/crates/fnv>`_ Rust crate.
 
