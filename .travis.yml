@@ -29,7 +29,6 @@ script:
 
 before_deploy:
 - python setup.py check -rms sdist
-- python setup.py bdist_wheel
 
 notifications:
   email:
@@ -42,5 +41,5 @@ deploy:
     secure: faPuGS1Sth5669AvfKBxYouQglKE0p2k2dGNqp6UNhwDdOUlR+JJ2bpw+LpBJoSDyy4MXLClU2EDOn4OT95p/yMFnbasMH62QZ5mRIQcCGUTC7mJP74uE4KQVx4YgIaeRfaixjVbqSHk3p8kPMa8BB4aqdXIN3dvKLC8g+5NELPZUJkqNzwZaED9JF4HCXAIbfPFsa2DDp+hu3tlKEgJ9yDnUUPqw5c4bAgz0HRjpyObeMulmw/v2VydGp9XTLz4PourvSQWVtxnUoTc+hzlCx4DChWN5a+jfqAJUSTCCNgIQhWghHFngGeTFrN7owFBzK//yplBsmynEYMNkJ5mGBWKmXwKnrP2X+HgQbJQFsrGzAj0xu5xiS5MHhUyKKJPJ8CWmRyAl9xrqLp//MbJ6fmYLQrcQi4yz3KE01g5S78Gony9vfNKrav1zu2w5ml3F3qkk7ZJ3+5If8TxCCmAOkwwZIN3wEKEAK3PAvg5HbT8Fu5/lSFu5c3t0CKoXvmCbpFq18gko/nGQp9+DROQDVkIbokE1eS2uPkiIxisFo+3UAReoebgzSJjnb16CS3fxB6QjYv1BlibnU0Mt5qRmx/cjU5obYL2gYktcC7KZOGBFmSTQymZNe1T/Nowyj6grv2f6mp2pYJ64RE/8JSlzQpLteBouV8fN42ihRT3FTo=
   on:
     tags: true
-    distributions: sdist bdist_wheel
+    distributions: bdist_wheel
     repo: pybindings/bindings.rust.fnv
