@@ -17,18 +17,16 @@ use pyo3::buffer::PyBuffer;
 /// A hasher used to calculate the FNV checksum of a string of information.
 ///
 /// Arguments:
-///     key (int, *optional*): a key to initialize the hash object with.
+///     key (`int`, *optional*): a key to initialize the hash object with.
 ///
 /// Attributes:
-///     block_size (int): number of bytes of a block read by this object.
-///     name (str): the hash algorithm being used by this object.
-///     digest_size (int): number of bytes in this hashes output.
+///     block_size (`int`): number of bytes of a block read by this object.
+///     name (`str`): the hash algorithm being used by this object.
+///     digest_size (`int`): number of bytes in this hashes output.
 ///
 /// See also:
-///     * `FNV article on Wikipedia
-///        <https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function>`_
-///     * `Original fnv rust crate
-///        <https://crates.io/crates/fnv>`
+///     `FNV article on Wikipedia
+///     <https://en.wikipedia.org/wiki/Fowler-Noll-Vo_hash_function>`_
 ///
 #[py::class]
 struct FnvHasher {
@@ -114,6 +112,7 @@ impl FnvHasher {
     }
 }
 
+/// Bindings to the `fnv <https://crates.io/crates/fnv>`_ crate.
 #[py::modinit(fnv)]
 fn init_mod(py: Python, m: &PyModule) -> PyResult<()> {
 
