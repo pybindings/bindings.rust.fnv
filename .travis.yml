@@ -4,38 +4,39 @@ cache:
   directories:
   - "$CARGO_HOME"
   - "$HOME/.pip/cache"
+
 env:
   global:
   - CARGO_HOME="$HOME/.cargo"
   - PATH="$PATH:$CARGO_HOME/bin"
+
 python:
 - '2.7'
 - '3.5'
 - '3.6'
 - nightly
+
 before_install:
 - curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
-- pip install -U setuptools setuptools_rust
+- pip install -U setuptools setuptools-rust docutils Pygments
+
 install:
 - python setup.py build
 - pip install .
+
 script:
 - python setup.py test
+
 before_deploy:
 - python setup.py check -rms sdist
 - python setup.py bdist_wheel
+
 notifications:
   email:
   - althonosdev@gmail.com
+
 deploy:
-- provider: releases
-  api_key:
-    secure: ZryJNg6xkQ9mDVuRLGLHxOMaHZ4YNJBWnONRUGuR4XqSITSj2omh8w9hdb1EzBO4pSLsAnxpXBrfNbehetCGBpH7g7Cpnm9V/WrLpkPrkouU41xfIvI1Fv0d9jOi8n8C4s8v7ceNafmPNvWYrBJn8AdCfjD3K1d0wcrsUeWYPIZ5Jrh+cNkBPcyuy6/5vehGb7k8+UGtZe/CBuKzSu/xMbUkXUCueTBDRa6F7fEU/KeR3XxsLnJwDNY29YYz61BXX7K4/7h1Pr4LoMa8fHfu7oxdYkXMzfo3NTRDF4sAh1RboUdmD1WwcrrLwswPqxtdAg9qQ+ktzrMVRXvgfADkfzqN+QgGPzLDDmFoU0UEzbnG/JJ+xPgrIC5PHaJ5blk3ASjmfPO6HsQYr68O/3BJpjghBMZ7DaCYe6L54+eyNp56B9RvjRtPx4UjYEuWtXZtpzHP8yNv7Sbq10lHbwN4nMQhccu3Unxdh4uP6FPOgtrY7tGMuFBGXl6RAG5HwkNAUhratJQWi071f7Q/m/4Bd6yapsjHMz7CLbs3nujUnMDgbHQvXNFyizpMMWN79gSW+6WVknmLaEDI5Sfh/l9qok0NqvwK6Vdrh3esAxN41gs8e2Ns4NX0nlwwrAPqo/8ucGi0OAmJfaBceIGGycwcyF7U/UaYNCGEKvPt+1M83lk=
-  file: dist/*.whl
-  file_glob: true
-  on:
-    repo: pybindings/bindings.rust.fnv
-- provider: pypi
+  provider: pypi
   user: althonos
   password:
     secure: faPuGS1Sth5669AvfKBxYouQglKE0p2k2dGNqp6UNhwDdOUlR+JJ2bpw+LpBJoSDyy4MXLClU2EDOn4OT95p/yMFnbasMH62QZ5mRIQcCGUTC7mJP74uE4KQVx4YgIaeRfaixjVbqSHk3p8kPMa8BB4aqdXIN3dvKLC8g+5NELPZUJkqNzwZaED9JF4HCXAIbfPFsa2DDp+hu3tlKEgJ9yDnUUPqw5c4bAgz0HRjpyObeMulmw/v2VydGp9XTLz4PourvSQWVtxnUoTc+hzlCx4DChWN5a+jfqAJUSTCCNgIQhWghHFngGeTFrN7owFBzK//yplBsmynEYMNkJ5mGBWKmXwKnrP2X+HgQbJQFsrGzAj0xu5xiS5MHhUyKKJPJ8CWmRyAl9xrqLp//MbJ6fmYLQrcQi4yz3KE01g5S78Gony9vfNKrav1zu2w5ml3F3qkk7ZJ3+5If8TxCCmAOkwwZIN3wEKEAK3PAvg5HbT8Fu5/lSFu5c3t0CKoXvmCbpFq18gko/nGQp9+DROQDVkIbokE1eS2uPkiIxisFo+3UAReoebgzSJjnb16CS3fxB6QjYv1BlibnU0Mt5qRmx/cjU5obYL2gYktcC7KZOGBFmSTQymZNe1T/Nowyj6grv2f6mp2pYJ64RE/8JSlzQpLteBouV8fN42ihRT3FTo=
