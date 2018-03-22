@@ -7,7 +7,7 @@ publish = false
 [lib]
 crate-type = ["cdylib"]
 name = "bindings_rust_fnv"
-path = "fnv.rs"
+path = "lib.rs"
 
 [dependencies]
 pyo3 = { version = "*", features = ["extension-module"] }
