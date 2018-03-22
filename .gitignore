@@ -5,6 +5,7 @@ __pycache__/
 
 # Rust extensions
 *.so
+Cargo.toml
 Cargo.lock
 
 # Distribution / packaging
