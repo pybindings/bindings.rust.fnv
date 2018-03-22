@@ -6,7 +6,7 @@ import setuptools_rust as rust
 setuptools.setup(
     setup_requires=[
         "setuptools",
-        "setuptools-rust",
+        "setuptools-rust ~=0.9",
     ],
     rust_extensions=rust.find_rust_extensions(
         binding=rust.Binding.PyO3,
