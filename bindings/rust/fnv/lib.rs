@@ -10,6 +10,7 @@ use std::hash::Hasher;
 use byteorder::ByteOrder;
 use byteorder::NativeEndian;
 
+use pyo3::py::*;
 use pyo3::prelude::*;
 use pyo3::exc::TypeError;
 use pyo3::buffer::PyBuffer;
@@ -28,7 +29,7 @@ use pyo3::buffer::PyBuffer;
 ///     `FNV article on Wikipedia
 ///     <https://en.wikipedia.org/wiki/Fowler-Noll-Vo_hash_function>`_
 ///
-#[py::class]
+#[class]
 struct FnvHasher {
     hasher: fnv::FnvHasher,
     token: PyToken,
@@ -43,7 +44,7 @@ impl FnvHasher {
     }
 }
 
-#[py::methods]
+#[methods]
 impl FnvHasher {
 
     #[new]
@@ -113,19 +114,19 @@ impl FnvHasher {
 }
 
 /// Bindings to the `fnv <https://crates.io/crates/fnv>`_ crate.
-#[py::modinit(fnv)]
+#[modinit(fnv)]
 fn init_mod(py: Python, m: &PyModule) -> PyResult<()> {
 
     let authors_re = regex::Regex::new(r"(.*) <(.*)>").unwrap();
 
-    if let Some(captures) = authors_re.captures(env!("CARGO_PKG_AUTHORS")) {
+    /*if let Some(captures) = authors_re.captures(env!("CARGO_PKG_AUTHORS")) {
         m.add("__author__", captures.get(1).unwrap().as_str())?;
         m.add("__author_email__", captures.get(2).unwrap().as_str())?;
     } else {
         m.add("__author__", py.None())?;
         m.add("__author_email__", py.None())?;
     }
-    m.add("__version__", env!("CARGO_PKG_VERSION"))?;
+    m.add("__version__", env!("CARGO_PKG_VERSION"))?;*/
     m.add_class::<FnvHasher>()?;
 
     /// Return a fnv hash object.
