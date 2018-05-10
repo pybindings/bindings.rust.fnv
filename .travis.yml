@@ -51,7 +51,10 @@ jobs:
       script:
         - docker run --rm -v `pwd`:/io -v $SCCACHE_DIR:/var/cache/sccache $IMAGE /io/ci/travis/wheels-linux.sh
         - ls dist
-
+      after_success:
+        - pip install twine
+        - twine upload dist/*manylinux*.whl
+      
 notifications:
   email:
   - althonosdev@gmail.com
