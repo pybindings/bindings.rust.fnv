@@ -2,52 +2,76 @@ sudo: false
 language: python
 cache:
   directories:
-  - "$CARGO_HOME"
-  - "$HOME/.pip/cache"
+    - "$CARGO_HOME"
+    - "$HOME/.pip/cache"
 
 env:
   global:
-  - CARGO_HOME="$HOME/.cargo"
-  - PATH="$PATH:$CARGO_HOME/bin"
+    - RUSTC_WRAPPER="sccache"
+    - CARGO_HOME="$HOME/.cargo"
+    - SCCACHE_DIR="$CARGO_HOME/sccache"
+    - PATH="$PATH:$CARGO_HOME/bin"
+    - SODIUM_STATIC=true
+    - SODIUM_LIB_DIR="$CARGO_HOME/lib"
 
-python:
-- '2.7'
-- '3.5'
-- '3.6'
+stages:
+  - test
+  - deploy
 
-before_install:
-- curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
-- pip install -U setuptools setuptools-rust docutils Pygments
+.test: &test
+  stage: test
+  before_install:
+    - ci/travis/setup.sh
+  install:
+    - pip install -U setuptools setuptools-rust
+  script:
+    - python setup.py test
 
-install:
-- python setup.py build
-- pip install .
+jobs:
+  include:
 
-script:
-- python setup.py test
+    # Tests
+    - python: 2.7
+      <<: *test
+    - python: 3.5
+      <<: *test
+    - python: 3.6
+      <<: *test
 
-before_deploy:
-- python setup.py check -rms sdist
+    # Wheels
+    - stage: deploy
+      os: linux
+      sudo: required
+      services:
+        - docker
+      env:
+        - IMAGE=quay.io/pypa/manylinux1_x86_64
+      install:
+        - docker pull $IMAGE
+      script:
+        - docker run --rm -v `pwd`:/io -v $SCCACHE_DIR:/var/cache/sccache $IMAGE /io/ci/travis/wheels-linux.sh
+        - ls dist
 
 notifications:
   email:
   - althonosdev@gmail.com
 
-deploy:
- #- provider: pypi
- #  user: althonos
- #  password:
- #    secure: faPuGS1Sth5669AvfKBxYouQglKE0p2k2dGNqp6UNhwDdOUlR+JJ2bpw+LpBJoSDyy4MXLClU2EDOn4OT95p/yMFnbasMH62QZ5mRIQcCGUTC7mJP74uE4KQVx4YgIaeRfaixjVbqSHk3p8kPMa8BB4aqdXIN3dvKLC8g+5NELPZUJkqNzwZaED9JF4HCXAIbfPFsa2DDp+hu3tlKEgJ9yDnUUPqw5c4bAgz0HRjpyObeMulmw/v2VydGp9XTLz4PourvSQWVtxnUoTc+hzlCx4DChWN5a+jfqAJUSTCCNgIQhWghHFngGeTFrN7owFBzK//yplBsmynEYMNkJ5mGBWKmXwKnrP2X+HgQbJQFsrGzAj0xu5xiS5MHhUyKKJPJ8CWmRyAl9xrqLp//MbJ6fmYLQrcQi4yz3KE01g5S78Gony9vfNKrav1zu2w5ml3F3qkk7ZJ3+5If8TxCCmAOkwwZIN3wEKEAK3PAvg5HbT8Fu5/lSFu5c3t0CKoXvmCbpFq18gko/nGQp9+DROQDVkIbokE1eS2uPkiIxisFo+3UAReoebgzSJjnb16CS3fxB6QjYv1BlibnU0Mt5qRmx/cjU5obYL2gYktcC7KZOGBFmSTQymZNe1T/Nowyj6grv2f6mp2pYJ64RE/8JSlzQpLteBouV8fN42ihRT3FTo=
- #  distributions: bdist_wheel
- #  on:
- #    tags: true
- #    repo: pybindings/bindings.rust.fnv
- - provider: pypi
-   user: althonos
-   password:
-     secure: faPuGS1Sth5669AvfKBxYouQglKE0p2k2dGNqp6UNhwDdOUlR+JJ2bpw+LpBJoSDyy4MXLClU2EDOn4OT95p/yMFnbasMH62QZ5mRIQcCGUTC7mJP74uE4KQVx4YgIaeRfaixjVbqSHk3p8kPMa8BB4aqdXIN3dvKLC8g+5NELPZUJkqNzwZaED9JF4HCXAIbfPFsa2DDp+hu3tlKEgJ9yDnUUPqw5c4bAgz0HRjpyObeMulmw/v2VydGp9XTLz4PourvSQWVtxnUoTc+hzlCx4DChWN5a+jfqAJUSTCCNgIQhWghHFngGeTFrN7owFBzK//yplBsmynEYMNkJ5mGBWKmXwKnrP2X+HgQbJQFsrGzAj0xu5xiS5MHhUyKKJPJ8CWmRyAl9xrqLp//MbJ6fmYLQrcQi4yz3KE01g5S78Gony9vfNKrav1zu2w5ml3F3qkk7ZJ3+5If8TxCCmAOkwwZIN3wEKEAK3PAvg5HbT8Fu5/lSFu5c3t0CKoXvmCbpFq18gko/nGQp9+DROQDVkIbokE1eS2uPkiIxisFo+3UAReoebgzSJjnb16CS3fxB6QjYv1BlibnU0Mt5qRmx/cjU5obYL2gYktcC7KZOGBFmSTQymZNe1T/Nowyj6grv2f6mp2pYJ64RE/8JSlzQpLteBouV8fN42ihRT3FTo=
-   distributions: sdist
-   on:
-     tags: true
-     python: 3.6
-     repo: pybindings/bindings.rust.fnv
+
+# deploy:
+#  #- provider: pypi
+#  #  user: althonos
+#  #  password:
+#  #    secure: faPuGS1Sth5669AvfKBxYouQglKE0p2k2dGNqp6UNhwDdOUlR+JJ2bpw+LpBJoSDyy4MXLClU2EDOn4OT95p/yMFnbasMH62QZ5mRIQcCGUTC7mJP74uE4KQVx4YgIaeRfaixjVbqSHk3p8kPMa8BB4aqdXIN3dvKLC8g+5NELPZUJkqNzwZaED9JF4HCXAIbfPFsa2DDp+hu3tlKEgJ9yDnUUPqw5c4bAgz0HRjpyObeMulmw/v2VydGp9XTLz4PourvSQWVtxnUoTc+hzlCx4DChWN5a+jfqAJUSTCCNgIQhWghHFngGeTFrN7owFBzK//yplBsmynEYMNkJ5mGBWKmXwKnrP2X+HgQbJQFsrGzAj0xu5xiS5MHhUyKKJPJ8CWmRyAl9xrqLp//MbJ6fmYLQrcQi4yz3KE01g5S78Gony9vfNKrav1zu2w5ml3F3qkk7ZJ3+5If8TxCCmAOkwwZIN3wEKEAK3PAvg5HbT8Fu5/lSFu5c3t0CKoXvmCbpFq18gko/nGQp9+DROQDVkIbokE1eS2uPkiIxisFo+3UAReoebgzSJjnb16CS3fxB6QjYv1BlibnU0Mt5qRmx/cjU5obYL2gYktcC7KZOGBFmSTQymZNe1T/Nowyj6grv2f6mp2pYJ64RE/8JSlzQpLteBouV8fN42ihRT3FTo=
+#  #  distributions: bdist_wheel
+#  #  on:
+#  #    tags: true
+#  #    repo: pybindings/bindings.rust.fnv
+#  - provider: pypi
+#    user: althonos
+#    password:
+#      secure: faPuGS1Sth5669AvfKBxYouQglKE0p2k2dGNqp6UNhwDdOUlR+JJ2bpw+LpBJoSDyy4MXLClU2EDOn4OT95p/yMFnbasMH62QZ5mRIQcCGUTC7mJP74uE4KQVx4YgIaeRfaixjVbqSHk3p8kPMa8BB4aqdXIN3dvKLC8g+5NELPZUJkqNzwZaED9JF4HCXAIbfPFsa2DDp+hu3tlKEgJ9yDnUUPqw5c4bAgz0HRjpyObeMulmw/v2VydGp9XTLz4PourvSQWVtxnUoTc+hzlCx4DChWN5a+jfqAJUSTCCNgIQhWghHFngGeTFrN7owFBzK//yplBsmynEYMNkJ5mGBWKmXwKnrP2X+HgQbJQFsrGzAj0xu5xiS5MHhUyKKJPJ8CWmRyAl9xrqLp//MbJ6fmYLQrcQi4yz3KE01g5S78Gony9vfNKrav1zu2w5ml3F3qkk7ZJ3+5If8TxCCmAOkwwZIN3wEKEAK3PAvg5HbT8Fu5/lSFu5c3t0CKoXvmCbpFq18gko/nGQp9+DROQDVkIbokE1eS2uPkiIxisFo+3UAReoebgzSJjnb16CS3fxB6QjYv1BlibnU0Mt5qRmx/cjU5obYL2gYktcC7KZOGBFmSTQymZNe1T/Nowyj6grv2f6mp2pYJ64RE/8JSlzQpLteBouV8fN42ihRT3FTo=
+#    distributions: sdist
+#    on:
+#      tags: true
+#      python: 3.6
+#      repo: pybindings/bindings.rust.fnv
