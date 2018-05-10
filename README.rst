@@ -33,32 +33,37 @@ Python bindings to the `fnv <https://crates.io/crates/fnv>`_ Rust crate.
 Installation
 ------------
 
-Build a `wheel package <https://wheel.rtfd.io>`_ from source
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Install from `wheel package <https://wheel.rtfd.io>`_
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Clone the repository locally and move there::
+Wheels are available for the following OS:
 
-  git clone https://github.com/pybindings/bindings.rust.fnv
-  cd bindings
+* Linux x86_64 / i686  (based on the `manylinux specification <https://www.python.org/dev/peps/pep-0513/>`_)
+* Mac OSX
 
-Then, make sure the rust *nightly* toolchain is used to build the project
-by running `rustup override` (if `rustup` is not installed, see the
-`rustup.rs homepage <https://github.com/rust-lang-nursery/rustup.rs>`_)::
+Simply run a recent ``pip``, and it will download a wheel if it is available for
+your platform::
 
-  rustup override set nightly
+    $ pip install --user bindings.rust.fnv
+
+
+Install from source distribution
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If your platform is not directly supported, you can still compile the library
+yourself but you'll need the Rust *nightly* toolchain for this. You can use
+``rustup`` to install the toolchain. See `rustup.rs <https://rustup.rs/>`_.
 
 Then, install the `setuptools-rust <https://pypi.python.org/pypi/setuptools-rust>`_
 and `wheel <https://pypi.python.org/pypi/wheel>`_ Python modules with
 ``pip``::
 
-  pip install --user setuptools-rust wheel
+  $ pip install --user setuptools-rust wheel
 
-Finally, compile the library into a wheel for your platform,
-and install it::
+Finally, use pip to install the library. It will download the source distribution,
+and start compiling (this can take a long time)::
 
-  python setup.py bdist_wheel
-  pip install --user dist/*.whl
-
+  $ pip install --user bindings.rust.fnv
 
 
 Usage
