@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e -x
+set -e +x
 
 clean_project() {
     # Remove compiled files that might cause conflicts
@@ -24,18 +24,11 @@ export RUSTC_WRAPPER="sccache"
 # Install sccache
 LATEST=$(cargo search -q sccache | grep sccache | cut -f2 -d"\"")
 URL="https://github.com/mozilla/sccache/releases/download/${LATEST}/sccache-${LATEST}-x86_64-unknown-linux-musl.tar.gz"
+echo -e "\e[32m\e[1m Downloading\e[0m sccache v$LATEST"
 curl -SsL $URL | tar xzvC /tmp
 mv "/tmp/sccache-${LATEST}-x86_64-unknown-linux-musl/sccache" "${CARGO_HOME}/bin/sccache"
 mkdir -p "$SCCACHE_DIR"
 
-# Install libsodium
-mkdir -p $CARGO_HOME/cache/libsodium
-curl -SsL "https://download.libsodium.org/libsodium/releases/LATEST.tar.gz" | tar xzvC /tmp
-cd /tmp/libsodium-*
-./autogen.sh
-./configure --prefix=$CARGO_HOME/ --disable-pie
-make all install
-cd /
-
 # Compile wheels
+echo -e "\e[32m\e[1m    Building\e[0m wheel for $(python --version)"
 pip wheel . -w ./dist
