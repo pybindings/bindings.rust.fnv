@@ -15,8 +15,9 @@ env:
     - SODIUM_LIB_DIR="$CARGO_HOME/lib"
 
 stages:
-  - test
-  - deploy
+  - name: test
+  - name: deploy
+    if: tag =~ ^v
 
 .test: &test
   stage: test
@@ -54,7 +55,7 @@ jobs:
       after_success:
         - pip install twine
         - twine upload dist/*manylinux*.whl
-      
+
 notifications:
   email:
   - althonosdev@gmail.com
