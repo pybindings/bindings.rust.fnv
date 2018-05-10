@@ -24,7 +24,7 @@ export RUSTC_WRAPPER="sccache"
 # Install sccache
 LATEST=$(cargo search -q sccache | grep sccache | cut -f2 -d"\"")
 URL="https://github.com/mozilla/sccache/releases/download/${LATEST}/sccache-${LATEST}-x86_64-unknown-linux-musl.tar.gz"
-echo -e "\e[32m\e[1m Downloading\e[0m sccache v$LATEST"
+/bin/echo -e "\e[32m\e[1m Downloading\e[0m sccache v$LATEST"
 curl -SsL $URL | tar xzvC /tmp
 mv "/tmp/sccache-${LATEST}-x86_64-unknown-linux-musl/sccache" "${CARGO_HOME}/bin/sccache"
 mkdir -p "$SCCACHE_DIR"
@@ -35,13 +35,13 @@ for PYBIN in /opt/python/cp{27,35,36}*/bin; do
     export PYTHON_LIB=$(${PYBIN}/python -c "import sysconfig; print(sysconfig.get_config_var('LIBDIR'))")
     export LIBRARY_PATH="$LIBRARY_PATH:$PYTHON_LIB"
     export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$PYTHON_LIB"
-    echo -e "\e[32m\e[1m    Building\e[0m wheel for $($PYBIN/python --version)"
+    /bin/echo -e "\e[32m\e[1m    Building\e[0m wheel for $($PYBIN/python --version)"
     "${PYBIN}/pip" install -U  setuptools setuptools-rust wheel
     "${PYBIN}/pip" wheel /io/ -w /io/dist/
 done
 
 # Bundle external shared libraries into the wheels
 for whl in /io/dist/*linux*.whl; do
-    echo -e "\e[32m\e[1m    Auditing\e[0m wheel $(basename $whl)"
+    /bin/echo -e "\e[32m\e[1m    Auditing\e[0m wheel $(basename $whl)"
     auditwheel repair "$whl" -w /io/dist/
 done

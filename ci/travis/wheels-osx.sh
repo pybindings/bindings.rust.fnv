@@ -24,11 +24,11 @@ export RUSTC_WRAPPER="sccache"
 # Install sccache
 LATEST=$(cargo search -q sccache | grep sccache | cut -f2 -d"\"")
 URL="https://github.com/mozilla/sccache/releases/download/${LATEST}/sccache-${LATEST}-x86_64-unknown-linux-musl.tar.gz"
-echo -e "\e[32m\e[1m Downloading\e[0m sccache v$LATEST"
+/bin/echo -e "\e[32m\e[1m Downloading\e[0m sccache v$LATEST"
 curl -SsL $URL | tar xzvC /tmp
 mv "/tmp/sccache-${LATEST}-x86_64-unknown-linux-musl/sccache" "${CARGO_HOME}/bin/sccache"
 mkdir -p "$SCCACHE_DIR"
 
 # Compile wheels
-echo -e "\e[32m\e[1m    Building\e[0m wheel for $(python --version)"
+/bin/echo -e "\e[32m\e[1m    Building\e[0m wheel for $(python --version)"
 pip wheel . -w ./dist

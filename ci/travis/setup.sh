@@ -11,7 +11,7 @@ curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
 # Setup sccache
 LATEST=$(cargo search -q sccache | grep sccache | cut -f2 -d"\"")
 URL="https://github.com/mozilla/sccache/releases/download/${LATEST}/sccache-${LATEST}-x86_64-unknown-linux-musl.tar.gz"
-echo -e "\e[32m\e[1m Downloading\e[0m sccache v$LATEST"
+/bin/echo -e "\e[32m\e[1m Downloading\e[0m sccache v$LATEST"
 curl -SsL $URL | tar xzvC /tmp
 mv "/tmp/sccache-${LATEST}-x86_64-unknown-linux-musl/sccache" "${CARGO_HOME}/bin/sccache"
 mkdir -p "$SCCACHE_DIR"
