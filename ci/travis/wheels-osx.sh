@@ -27,5 +27,5 @@ mv "/tmp/sccache-${LATEST}-x86_64-apple-darwin/sccache" "${CARGO_HOME}/bin/sccac
 mkdir -p "$SCCACHE_DIR"
 
 # Compile wheels
-/bin/echo -e "\033[32m\033[1m    Building\033[0m wheel for $(python --version)"
+echo -e "\033[32m\033[1m    Building\033[0m wheel for $(python --version)"
 pip wheel . -w ./dist
